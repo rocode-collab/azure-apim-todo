@@ -63,7 +63,7 @@ jobs:
           kind: 'GlobalDocumentDB'
           properties: {
             databaseAccountOfferType: 'Standard'
-            enableFreeTier: true
+            enableFreeTier: false
             locations: [
               {
                 locationName: location
