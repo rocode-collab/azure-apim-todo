@@ -17,20 +17,24 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy resource groups
+      - name: Deploy Bicep file
         run: |
           az deployment sub create \
             --location canadacentral \
             --template-file main.bicep
 
-      - name: Deploy APIM
-        run: |
-          az deployment group create \
-            --resource-group apim-rg \
-            --template-file apim.bicep
+param location string = 'canadacentral'
+param apimName string = 'my-apim-instance'
 
-      - name: Deploy Backend
-        run: |
-          az deployment group create \
-            --resource-group backend-rg \
-            --template-file backend.bicep
+resource apim 'Microsoft.ApiManagement/service@2022-08-01' = {
+  name: apimName
+  location: location
+  sku: {
+    name: 'Consumption'
+    capacity: 0
+  }
+  properties: {
+    publisherEmail: 'admin@contoso.com'
+    publisherName: 'Contoso'
+  }
+}
