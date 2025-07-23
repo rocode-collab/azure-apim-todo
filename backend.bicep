@@ -1,6 +1,6 @@
 param location string = 'canadacentral'
 param appServicePlanName string = 'my-appservice-plan'
-param webAppName string = 'my-backend-app'
+param webAppName string = 'my-sandbox-backend-app'
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
   name: appServicePlanName
