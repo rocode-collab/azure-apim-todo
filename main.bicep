@@ -1,3 +1,5 @@
+targetScope = 'subscription'
+
 param location string = 'canadacentral'
 param apimResourceGroupName string = 'apim-rg'
 param backendResourceGroupName string = 'backend-rg'
