@@ -187,8 +187,6 @@ jobs:
     # -----------------------------------------
     - name: Import API and apply APIM policy
       run: |
-        az extension add --name apim || true
-
         az apim api import \
           --resource-group $APIM_RG \
           --service-name $APIM_NAME \
@@ -198,8 +196,8 @@ jobs:
           --specification-format OpenApiJson \
           --service-url "https://${FUNCTION_APP_NAME}.azurewebsites.net/api"
 
-        az apim api policy set \
+        az apim api policy update \
           --resource-group $APIM_RG \
           --service-name $APIM_NAME \
           --api-id $API_ID \
-          --policy-file $APIM_POLICY_FILE
+          --xml-policy $APIM_POLICY_FILE
