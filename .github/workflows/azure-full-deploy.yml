@@ -42,8 +42,8 @@ jobs:
         cat > $bicepFile << EOF
         param location string = 'canadacentral'
         param functionAppName string = '$FUNCTION_APP_NAME'
-        param storageAccountName string = toLower('mysandboxbackendsa${RANDOM}')
-        param cosmosAccountName string = toLower('${FUNCTION_APP_NAME}cosmos${RANDOM}')
+        param storageAccountName string = toLower('mysandboxbackendsa')
+        param cosmosAccountName string = toLower('mysandboxbackendcosmosca')
 
         resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
           name: storageAccountName
@@ -63,7 +63,7 @@ jobs:
           kind: 'GlobalDocumentDB'
           properties: {
             databaseAccountOfferType: 'Standard'
-            enableFreeTier: false
+            enableFreeTier: true
             locations: [
               {
                 locationName: location
@@ -178,7 +178,7 @@ jobs:
     # -----------------------------------------
     - name: Zip and deploy Python Function App
       run: |
-        zip -r functionapp.zip azure-apim-todo/function_app/*
+        zip -r functionapp.zip function_app/*
 
         az functionapp deployment source config-zip -g $BACKEND_RG -n $FUNCTION_APP_NAME --src functionapp.zip
 
