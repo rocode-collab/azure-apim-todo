@@ -77,8 +77,9 @@ jobs:
           }
         }
 
-        resource cosmosDb 'Microsoft.DocumentDB/sqlDatabases@2022-11-15' = {
-          name: '\${cosmosAccount.name}/ToDoDb'
+        resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-11-15' = {
+          name: 'ToDoDb'
+          parent: cosmosAccount
           properties: {
             resource: {
               id: 'ToDoDb'
@@ -89,8 +90,9 @@ jobs:
           ]
         }
 
-        resource cosmosToDoContainer 'Microsoft.DocumentDB/sqlContainers@2022-11-15' = {
-          name: '\${cosmosDb.name}/ToDoItems'
+        resource cosmosToDoContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-11-15' = {
+          name: 'ToDoItems'
+          parent: cosmosDb
           properties: {
             resource: {
               id: 'ToDoItems'
@@ -105,8 +107,9 @@ jobs:
           ]
         }
 
-        resource cosmosIdempotencyContainer 'Microsoft.DocumentDB/sqlContainers@2022-11-15' = {
-          name: '\${cosmosDb.name}/IdempotencyKeys'
+        resource cosmosIdempotencyContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-11-15' = {
+          name: 'IdempotencyKeys'
+          parent: cosmosDb
           properties: {
             resource: {
               id: 'IdempotencyKeys'
