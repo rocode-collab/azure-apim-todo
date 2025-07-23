@@ -1,0 +1,126 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ToDo API",
+    "version": "1.0.0",
+    "description": "Idempotent ToDo API with Idempotency-Key support"
+  },
+  "paths": {
+    "/items": {
+      "get": {
+        "summary": "Get all ToDo items",
+        "responses": {
+          "200": {
+            "description": "List of ToDo items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ToDoItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a ToDo item",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Unique key to make this operation idempotent"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToDoItemCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created ToDo item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToDoItem"
+                }
+              }
+            }
+          },
+          "400": {"description": "Missing or invalid Idempotency-Key"}
+        }
+      }
+    },
+    "/items/{id}": {
+      "get": {
+        "summary": "Get a single ToDo item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {"description": "ToDo item details", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ToDoItem"}}}},
+          "404": {"description": "Item not found"}
+        }
+      },
+      "delete": {
+        "summary": "Delete a ToDo item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {"type": "string"},
+            "description": "Unique key to make this delete operation idempotent"
+          }
+        ],
+        "responses": {
+          "204": {"description": "Item deleted"},
+          "400": {"description": "Missing Idempotency-Key"},
+          "404": {"description": "Item not found"}
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ToDoItem": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "completed": {"type": "boolean"}
+        },
+        "required": ["id", "title", "completed"]
+      },
+      "ToDoItemCreate": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "completed": {"type": "boolean"}
+        },
+        "required": ["title", "completed"]
+      }
+    }
+  }
+}

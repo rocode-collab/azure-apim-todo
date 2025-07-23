@@ -1,0 +1,27 @@
+<inbound>
+    <base />
+
+    <!-- Validate Idempotency-Key header for POST and DELETE -->
+    <choose>
+        <when condition="@(context.Request.Method == "POST" || context.Request.Method == "DELETE")">
+            <validate-header name="Idempotency-Key" failed-validation-httpcode="400"
+                failed-validation-error-message="Idempotency-Key header is required." />
+        </when>
+    </choose>
+
+    <!-- Free tier API Management quotas -->
+    <!-- 1000 calls per day per subscription -->
+    <quota calls="1000" renewal-period="86400" />
+    <!-- Limit to 10 calls per minute to smooth traffic -->
+    <rate-limit calls="10" renewal-period="60" />
+
+</inbound>
+<backend>
+    <base />
+</backend>
+<outbound>
+    <base />
+</outbound>
+<on-error>
+    <base />
+</on-error>
