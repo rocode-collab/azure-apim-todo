@@ -28,9 +28,20 @@ jobs:
           az deployment group create \
             --resource-group apim-rg \
             --template-file apim.bicep
+        
 
       - name: Deploy Backend
         run: |
           az deployment group create \
             --resource-group backend-rg \
             --template-file backend.bicep
+
+      - name: Import OpenAPI spec to APIM
+        run: |
+          az apim api import \
+            --resource-group apim-rg \
+            --service-name my-sandbox-apim-instance \
+            --path todo \
+            --api-id todo-api \
+            --specification-format OpenApiJson \
+            --specification-path openapi-todo.json
