@@ -14,7 +14,7 @@ env:
   API_ID: todo-api
   API_PATH: todo
   OPENAPI_FILE: openapi-todo.json
-  APIM_POLICY_FILE: apim-policy.xml
+  APIM_POLICY_FILE: policy.xml
 
 jobs:
   deploy:
